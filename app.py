@@ -4,8 +4,8 @@ from datetime import datetime
 
 st.set_page_config(page_title="Sudlar to'g'risida Qonun - Test", page_icon="⚖️", layout="centered")
 
-# --- TELEGRAM BOT SOZLAMALARI (TO'G'RILANGAN TOKEN VA CHAT ID) ---
-TELEGRAM_BOT_TOKEN = "8941132517:AAFXeT3o4-jkwRz-i0PqS30LrlYl8haiQ4g"
+# --- TELEGRAM BOT SOZLAMALARI (YANGI TOKEN VA CHAT ID) ---
+TELEGRAM_BOT_TOKEN = "8941132517:AAG0n3_TaCOOTsAbAyG2NlOz_U_ahsvr7E0"
 TELEGRAM_CHAT_ID = "7628668254"
 
 def send_telegram_notification(full_name, score, total, percentage, user_answers):
