@@ -4,14 +4,14 @@ from datetime import datetime
 
 st.set_page_config(page_title="Sudlar to'g'risida Qonun - Test", page_icon="⚖️", layout="centered")
 
-# --- TELEGRAM BOT SOZLAMALARI ---
+# --- TELEGRAM BOT SOZLAMALARI (TO'G'RILANGAN TOKEN VA CHAT ID) ---
 TELEGRAM_BOT_TOKEN = "8941132517:AAFXeT3o4-jkwRz-i0PqS30LrlYl8haiQ4g"
 TELEGRAM_CHAT_ID = "7628668254"
 
 def send_telegram_notification(full_name, score, total, percentage, user_answers):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    # Telegram xabari (Oddiy va xavfsiz matn ko'rinishida)
+    # Telegram xabari matni
     message = f"📥 YANGI TEST NATIJASI\n\n"
     message += f"👤 Talaba: {full_name}\n"
     message += f"📅 Vaqt: {now}\n"
