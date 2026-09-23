@@ -6,9 +6,8 @@ st.set_page_config(page_title="Sudlar to'g'risida Qonun - Test", page_icon="âš–ï
 
 # --- TELEGRAM BOT SOZLAMALARI ---
 # Telegram botingiz tokeni va Chat ID sini shu yerga yozing
-TELEGRAM_BOT_TOKEN = st.secrets.get("TELEGRAM_BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
-TELEGRAM_CHAT_ID = st.secrets.get("TELEGRAM_CHAT_ID", "YOUR_CHAT_ID_HERE")
-
+TELEGRAM_BOT_TOKEN = "8941132517:AAFXeT3o4-jkwRz-i0PqS30LrlYl8haiQ4g"
+TELEGRAM_CHAT_ID = "7628668254"
 def send_telegram_notification(full_name, score, total, percentage, user_answers):
     if TELEGRAM_BOT_TOKEN == "YOUR_BOT_TOKEN_HERE" or TELEGRAM_CHAT_ID == "YOUR_CHAT_ID_HERE":
         return False
