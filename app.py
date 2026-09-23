@@ -4,31 +4,41 @@ from datetime import datetime
 
 st.set_page_config(page_title="Sudlar to'g'risida Qonun - Test", page_icon="⚖️", layout="centered")
 
-# --- TELEGRAM BOT SOZLAMALARI (SIZNING MA'LUMOTLARINGIZ) ---
+# --- TELEGRAM BOT SOZLAMALARI ---
 TELEGRAM_BOT_TOKEN = "8941132517:AAFXeT3o4-jkwRz-i0PqS30LrlYl8haiQ4g"
 TELEGRAM_CHAT_ID = "7628668254"
 
 def send_telegram_notification(full_name, score, total, percentage, user_answers):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    message = f"<b>📥 YANGI TEST NATIJASI</b>\n\n"
-    message += f"👤 <b>Talaba:</b> {full_name}\n"
-    message += f"📅 <b>Vaqt:</b> {now}\n"
-    message += f"📊 <b>Natija:</b> {score} / {total}\n"
-    message += f"📈 <b>Foiz:</b> {percentage:.1f}%\n\n"
-    message += "<b>Tanlangan javoblar:</b>\n"
+    
+    # Telegram xabari (Oddiy va xavfsiz matn ko'rinishida)
+    message = f"📥 YANGI TEST NATIJASI\n\n"
+    message += f"👤 Talaba: {full_name}\n"
+    message += f"📅 Vaqt: {now}\n"
+    message += f"📊 Natija: {score} / {total}\n"
+    message += f"📈 Foiz: {percentage:.1f}%\n\n"
+    message += "Tanlangan javoblar:\n"
     
     for idx, ans in enumerate(user_answers, 1):
         message += f"{idx}. {ans}\n"
         
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "HTML"}
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID, 
+        "text": message
+    }
+    
     try:
-        response = requests.post(url, json=payload)
-        return response.status_code == 200
-    except Exception:
-        return False
+        res = requests.post(url, json=payload, timeout=10)
+        res_json = res.json()
+        if res.status_code == 200 and res_json.get("ok"):
+            return True, "Muvaffaqiyatli"
+        else:
+            return False, f"Telegram API Xatosi: {res_json.get('description', res.text)}"
+    except Exception as e:
+        return False, f"Ulanishda xatolik: {str(e)}"
 
-# --- TEST SAVOLLARI VA TO'G'RI JAVOBLARI (I-VARIANT) ---
+# --- TEST SAVOLLARI (I-VARIANT) ---
 QUESTIONS = [
     {
         "q": "1. Quyida berilgan qaysilar O’zbekiston Respublikasi Sud tizimiga KIRMAYDI.\n1) harbiy sudlar; 2) jinoyat ishlari bo‘yicha tumanlararo, tuman, Shahar sudlari; 3) Qoraqalpog‘iston Respublikasi ma’muriy sudi, viloyatlar va Toshkent shahar ma’muriy sudlari; 4) fuqarolik ishlari bo‘yicha tuman, shahar sudlari;",
@@ -307,7 +317,7 @@ if st.button("📝 Testni tekshirish", type="primary", use_container_width=True)
         full_name = f"{last_name.strip()} {first_name.strip()} {middle_name.strip()}".strip()
         
         # Telegramga yuborish
-        sent = send_telegram_notification(
+        success, error_msg = send_telegram_notification(
             full_name=full_name,
             score=correct_count,
             total=total_q,
@@ -315,12 +325,13 @@ if st.button("📝 Testni tekshirish", type="primary", use_container_width=True)
             user_answers=answers_list_for_tg
         )
         
-        st.success("✅ Test muvaffaqiyatli topshirildi!")
-        st.balloons()
+        if success:
+            st.success("✅ Test muvaffaqiyatli topshirildi va Telegram botga yuborildi!")
+            st.balloons()
+        else:
+            st.error(f"❌ Natija hisoblandi, lekin Telegram'ga yuborishda xatolik bo'ldi: {error_msg}")
         
         # Talabaga ko'rinadigan natija
         st.info(f"👤 **Talaba:** {full_name}\n\n"
                 f"🎯 **Sizning natijangiz:** {correct_count} / {total_q} ta to'g'ri\n\n"
                 f"📊 **Ko'rsatkich:** {percentage:.1f}%")
-        
-        st.markdown("> **Eslatma:** Test natijalari tekshiruvchiga avtomatishtirilgan holda yuborildi.")
