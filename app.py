@@ -4,14 +4,11 @@ from datetime import datetime
 
 st.set_page_config(page_title="Sudlar to'g'risida Qonun - Test", page_icon="⚖️", layout="centered")
 
-# --- TELEGRAM BOT SOZLAMALARI ---
-# Telegram botingiz tokeni va Chat ID sini shu yerga yozing
+# --- TELEGRAM BOT SOZLAMALARI (SIZNING MA'LUMOTLARINGIZ) ---
 TELEGRAM_BOT_TOKEN = "8941132517:AAFXeT3o4-jkwRz-i0PqS30LrlYl8haiQ4g"
 TELEGRAM_CHAT_ID = "7628668254"
+
 def send_telegram_notification(full_name, score, total, percentage, user_answers):
-    if TELEGRAM_BOT_TOKEN == "YOUR_BOT_TOKEN_HERE" or TELEGRAM_CHAT_ID == "YOUR_CHAT_ID_HERE":
-        return False
-    
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     message = f"<b>📥 YANGI TEST NATIJASI</b>\n\n"
     message += f"👤 <b>Talaba:</b> {full_name}\n"
@@ -321,7 +318,7 @@ if st.button("📝 Testni tekshirish", type="primary", use_container_width=True)
         st.success("✅ Test muvaffaqiyatli topshirildi!")
         st.balloons()
         
-        # Talabaga ko'rinadigan natija (Qaysi javob to'g'riligi KO'RINMAYDI)
+        # Talabaga ko'rinadigan natija
         st.info(f"👤 **Talaba:** {full_name}\n\n"
                 f"🎯 **Sizning natijangiz:** {correct_count} / {total_q} ta to'g'ri\n\n"
                 f"📊 **Ko'rsatkich:** {percentage:.1f}%")
